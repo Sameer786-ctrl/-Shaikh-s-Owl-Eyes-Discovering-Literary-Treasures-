@@ -1,0 +1,80 @@
+{% include 'header.html' %}
+
+<body class="page-dashboard">
+    {% include 'navigation.html' %}
+    
+    <main>
+        
+        <div class="image-dec"></div>
+        <div class="quote">Reading is essential for those who seek to rise above the ordinary.</div>
+        <div class="container flex">
+            <main>
+                <h1><span>Welcome {{ user_info[0].first_name}}</span> User Dashboard</h1>
+                {% with errors = get_flashed_messages(category_filter=["request"]) %}
+                    {% if errors %}
+                        <div class="error-messages">
+                            {%- for msg in errors %}
+                                <p class="error">{{ msg }}</p>
+                            {% endfor -%}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                
+                {% with errors = get_flashed_messages(category_filter=["info"]) %}
+                    {% if errors %}
+                        <div class="info-messages">
+                            {%- for msg in errors %}
+                                <p class="info">{{ msg }}</p>
+                            {% endfor -%}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                {% with errors = get_flashed_messages(category_filter=["message"]) %}
+                    {% if errors %}
+                        <div class="error-messages">
+                            {%- for msg in errors %}
+                                <p class="error">{{ msg }}</p>
+                            {% endfor -%}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                    
+                <h3>Your Flocks</h3>
+                {% if host_info.user_id == user_info[0].id %}        
+                    <h2>You're Hosting!</h2>
+                    <a href="/host_settings" class="button">Edit/Update Host settings</a>
+                {% endif %}
+
+                {% if flock_info|length == 0 %}
+                <p>You are currently not apart of a flock</p>
+                {% else %}
+                    {% for info in flock_info %}
+                        <h3>{{ info.title }}</h3>
+                        <p>Located: {{ info.city }}, {{ info.state }}</p>
+                        <p>Account Status: {{ info.status.status }} </p>
+                        <p>NEXT MEETING</p>
+                        <div class="nav"><a href="/flocks_dashboard/{{ info.id }}" class="past">Flock Dash</a> | <a href="/past_reads" class="past">Past Reads</a> | <a href="/flock_members" class="members">Flock Members</a></div>
+                    {% endfor %}
+                {% endif %}
+
+                <h3>More Flocks:</h3>
+                <div class="to-do">
+                    <form action="/submit_join_request" method="POST" class="join-flock">
+                        <!-- if they're not in a group yet -->
+                        <select name="flock_id" id="">
+                            <option value="">Join a Flock</option>
+                            {% for flock in all_flocks %}
+                                <option value="{{ flock.id }},{{ flock.status.user_id}}">{{ flock.title }}</option>
+                            {% endfor %}
+                        </select>
+                        <textarea name="message" id="" cols="30" rows="10">{{user_info[0].first_name}} {{user_info[0].last_name}} would like to join your group!</textarea>
+                        <input type="hidden" name="user_id" value="{{ user_info[0].id }}">
+                        <input type="submit" value="Join!">
+                    </form>
+                    <h3><a href="/create_flock"> Create a Flock! </a></h3>
+                </div>
+            </main>
+        </div>
+    </main>
+    {% include 'footer.html' %}

@@ -1,0 +1,55 @@
+{% include 'header.html' %}
+<body>
+    <main>
+        {% include 'navigation.html' %}
+        <div class="container flex">
+            <div class="nav-bar">
+                <h1>CodingDojo Wall</h1>
+                <div class="welcome"><p>Welcome, {{ user_info.first_name }}</p> | <a href="/logout">Logout</a> | <a href="/">Home</a></div>
+            </div>    
+
+            <div class="col-2 inbox">
+                <h2><span class="count">{{  all_messages|length }}</span> Message(s) For You</h2>
+
+                {% for message in all_messages %}
+                    <div>
+                        <p class="message">{{ message.content }}</p>
+                        <p class="from"><strong>From: </strong> {{ message.from_first }} {{ message.from_last }}</p>
+                        <a href="/delete_message/{{ message.id }}">Delete</a>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-2 send-message">
+                <h2>Send a Message</h2>
+                <p>You have sent {% if not user_info.message_count %} 0 {% else %}{{ user_info.message_count }} {% endif%}</p>
+
+                <div class="error-messages">
+                    {% with errors = get_flashed_messages(category_filter=["message"]) %}
+                        {% if errors %}
+                            {%- for msg in errors %}
+                                <p class="error">{{ msg }}</p>
+                            {% endfor -%}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                <form action="/send_message" method="POST">
+                    <select name="user_id" id="">
+                        <option value="0" dsiabled selected>Choose Recipent</option>
+                        {% for user in all_users %}
+                            <option value="{{ user.id }}">{{ user.first_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <textarea name="content" id="" cols="30" rows="10" placeholder="Place your message here! "></textarea>
+
+                    <input type="hidden" name="from_id" value="{{ session['id'] }}">
+
+                    <input type="submit" value="submit" class="submit">
+
+                </form>
+
+            </div>
+        </div>
+    </main> 
+
+{% include 'footer.html' %}

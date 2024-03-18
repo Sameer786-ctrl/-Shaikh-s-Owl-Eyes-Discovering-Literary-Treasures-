@@ -1,0 +1,78 @@
+{% include 'header.html' %}
+
+<body class="page-add-book">
+    {% include 'navigation.html' %}
+    <main>
+        <div class="container">
+            <div class="side-dec"></div>
+            <h1><span>Add</span> A New Book: </h1>
+            <h5>Please Read</h5>
+            <p>To add a book you will need all the information below. Be Sure that it is accruate. If you are unusre please refer to <a href="https://www.goodreads.com/" target="_blank">GoodReads</a> </p>
+            <p><strong>ISBN:</strong> Sometimes there's more than one. In that care please pick the 1st harcover isbn. Book may need to be verifted is a close match is found.</p>
+            
+            <label for="info" class="required">* Are required Fields</label>
+            <form action="/add_new_book" method="POST">
+                {% with errors = get_flashed_messages(category_filter=["books"]) %}
+                    {% if errors %}
+                        <div class="error-messages">
+                            {%- for msg in errors %}
+                                <p class="error">{{ msg }}</p>
+                            {% endfor -%}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <label for="title">Book Title</label>
+                <input type="text" name="title" placeholder="*Title" value="{{ session['books'].title }}">
+
+                <div class="name-wrapper">
+                    <span>
+                        <label for="info">First Name</label>
+                        <input type="text" name="first_name" placeholder="*Author First Name" value="{{ session['books'].first_name }}">
+                    </span>
+
+                    <span>
+                        <label for="info">Last Name</label>
+                        <input type="text" name="last_name" placeholder="*Author Last Name" value="{{ session['books'].last_name }}">
+                    </span>
+                </div>
+
+                <div class="series-wrapper">
+                    <span class="series-name">
+                        <label for="info">Book Series Name</label>
+                        <input type="text" name="series_name" placeholder="Series Name" value="{{ session['books'].series_name }}">
+                    </span>
+
+                    <span class="series-num">
+                        <label for="info">Number in the Series</label>
+                        <input type="number" name="num_series" placeholder="Number in Series" min="0" step="any" value="{{ session['books'].num_series }}">
+                    </span>
+
+                    <span class="num-page">
+                        <label for="info">Number of Pages</label>
+                        <input type="number" name="page_num" placeholder="page numbers" min="0" max="2000" step="any" value="{{ session['books'].page_num }}">
+                    </span>
+
+                    <span class="isbn">
+                        <label for="info">Book's ISBN Number</label>
+                        <input type="number" name="isbn" placeholder="*ISBN" value="{{ session['books'].isbn }}">
+                    </span>
+                </div>
+
+                <label for="info">Gener: If more than one use a comman seperated list</label>
+                <input type="text" name="genre" placeholder="Gener:  if 1 < comma seperated list" value="{{ session['books'].genre }}">
+
+                <label for="info">Book Description:</label>
+                <textarea name="description" class="description" cols="30" rows="10" placeholder="Brief description about the book">{{ session['books'].description }}</textarea>
+
+                <label for="info">Book Image URL:</label>
+                <input type="text" name="img" placeholder="*Image URL" value="{{ session['books'].img }}">
+
+                <label for="info">Link:</label>
+                <input type="url" name="link" placeholder="Link for more information" value="{{ session['books'].link }}">
+                <input type="submit" value="Add Book" class="submit">
+            </form>
+        </div>
+    </main>
+
+{% include 'footer.html' %}

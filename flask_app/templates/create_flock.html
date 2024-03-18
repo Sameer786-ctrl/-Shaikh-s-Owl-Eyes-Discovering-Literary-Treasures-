@@ -1,0 +1,40 @@
+{% from "_macros.html" import states %}
+
+{% include 'header.html' %}
+<body class="page-create-flock">
+    {% include 'navigation.html' %}
+    <div class="container">      
+        <h1>Create a Flock</h1>
+            <form action="/create_new_flock" method="POST">
+                {% with errors = get_flashed_messages(category_filter=["flocks"]) %}
+                    {% if errors %}
+                        <div class="error-messages">
+                            {%- for msg in errors %}
+                                <p class="error">{{ msg }}</p>
+                            {% endfor -%}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <label for="title">Title</label>
+                <input type="text" name="title" placeholder="Flock Name">
+
+                <div class="city-state flex">
+                    <span class="cty-wrp"><label for="city">City</label>
+                    <input type="text" name="city" placeholder="City"></span>
+                    <span class="st-wrp">{{ states() }}</span>
+                </div>
+
+                <label for="privacy_setting">Group Privacy Setting</label>
+                
+                <span>
+                    <span class="radio"><input type="radio" name="privacy_setting" value="open" checked>
+                    <label for="html"><strong>Open</strong>: group shows up in searches </label></span>
+
+                    <span class="radio"><input type="radio" name="privacy_setting" value="private">
+                    <label for="css"><strong>Private</strong>: Group is by invite only and won't show up in searches</label></span>
+                </span>
+                <input type="submit" value="Submit" class="submit">
+            </form>
+        </div>    
+    {% include 'footer.html' %}

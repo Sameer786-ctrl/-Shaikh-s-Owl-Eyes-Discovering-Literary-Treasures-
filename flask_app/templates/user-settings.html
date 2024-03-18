@@ -1,0 +1,116 @@
+{% from "_macros.html" import states %}
+
+{% include 'header.html' %}
+<body>
+    <body class="page-user-settings">
+        {% include 'navigation.html' %}
+        <main>
+            <div class="container ">
+
+                <h1><span> User Settings:</span>  {{ user_info[0].first_name }} {{ user_info[0].last_name }}</h1>
+
+                <div class="info-content">
+                    <h3 onclick="toggle_hidden(event)">Update User Info:</h3>
+                    <div class="hide-content">
+                        {% with errors = get_flashed_messages(category_filter=["user"]) %}
+                            {% if errors %}
+                                <div class="error-messages">
+                                    {%- for msg in errors %}
+                                        <p class="error">{{ msg }}</p>
+                                    {% endfor -%}
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+
+                        <form action="update_user_settings" method="post">
+                            <label for="first_name">First Name:</label>
+                            <input type="text" name="first_name" placeholder="First Name" value="{{ user_info[0].first_name }}">
+
+                            <label for="last_name">Last Name:</label>
+                            <input type="text" name="last_name" placeholder="Last Name" value="{{ user_info[0].last_name }}">
+
+                            <label for="phone">Phone:</label>
+                            <input type="phone" name="phone" placeholder="phone" value="{{  user_info[0].phone }}">
+                            
+                            <label for="email">Email:</label>
+                            <input type="text" name="email" placeholder="email@format.com" value="{{  user_info[0].email }}">
+
+                            <input type="hidden" name="id" value="{{ user_info[0].id }}">
+                            <input type="submit" value="Update" class="update">
+                        </form>
+                    </div>
+                </div>
+                
+                
+                <div class="info-content">
+                    <h3 onclick="toggle_hidden(event)">Update Password</h3>
+                    <div class="hide-content">
+                        {% with errors = get_flashed_messages(category_filter=["password"]) %}
+                            {% if errors %}
+                                <div class="error-messages">
+                                    {%- for msg in errors %}
+                                        <p class="error">{{ msg }}</p>
+                                    {% endfor -%}
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                        <form action="/update_password" method="post">
+                            <label for="old_password">Password:</label>
+                            <input type="password" name="old_password" placeholder="Old Password" value="">
+                            
+                            <label for="password">New Password:</label>
+                            <input type="password" name="password" placeholder="New Password" value="">
+                            <label for="confirm_password">Confirm New Password:</label>
+                            <input type="password" name="confirm_password" placeholder="Confirm New Password" value="">
+
+                            <input type="hidden" name="id" value="{{ user_info[0].id }}">
+                            <input type="submit" value="Update Password" class="update">
+                        </form>
+                    </div>   
+                </div> 
+
+                <a href="/delete_user/{{ user_info[0].id }}" class="delete">Delete Account</a>
+                <h2>Flocks You're Affiliated With: </h2>
+
+                {% if user_info[0].flock.title is  none %}
+                    <div class="links"><a href="/join_flock">Join a Flock</a> | <a href="/create_flock">Create a Flock</a></div>
+                {% else %}
+                <div class="flex">
+                    {% for user in user_info %}
+                        <div class="group-info">
+                            <h3>{{ user.flock.title }} </h3>
+                            <p><strong>Member Since:</strong> {{ user.flock.created_at.strftime('%B %d, %Y') }}</p>
+                            <p><strong>Membership Status:</strong> {{ user.info.status }}
+                                {% if user.info.status == 'admin' %} 
+                                    <a class="edit" href="/flock_settings/{{ user.flock.id }}">Edit Group Settings</a>
+                                {% endif %}
+                            </p>
+                            
+                            <form action="/leave_flock" method="post">
+                                <input type="hidden" name="user_id" value="{{ user.id }}">
+                                <input type="hidden" name="flock_id" value="{{ user.flock.id }}">
+                                <input type="submit" value="Leave Group" class="submit">
+                            </form>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                
+            </div>
+        </main>
+    {% include 'footer.html' %}
+
+
+<!-- 
+    1. see what groups your in
+        - join another groupßå
+        - create a group
+        - leave a group
+    2. delete account
+    3. change
+        name,address,password,phone,email,image 
+    4. custom requests or resposes
+        - pets
+        - allergies
+        - kids -->

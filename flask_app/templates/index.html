@@ -1,0 +1,64 @@
+{% include 'header.html' %}
+<body class="page-home">
+    <main>
+        <div class="container flex">
+            <div class="title-wrp">
+                <h1><span class="first">The</span>Night<span class="two">Owls</span> </h1>
+                <h3 class="subtitle">Where readers flock to talk shop!</h3>
+            </div>
+
+            <aside>
+                {% with errors = get_flashed_messages(category_filter=["info"]) %}
+                    {% if errors %}
+                        <div class="info-messages">
+                            {%- for msg in errors %}
+                                <p class="error">{{ msg }}</p>
+                            {% endfor -%}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <div class="login">
+                    <h3>Become an Owl</h3>
+                    {% with errors = get_flashed_messages(category_filter=["error"]) %}
+                        {% if errors %}
+                            <div class="error-messages">
+                                {%- for msg in errors %}
+                                    <p class="error">{{ msg }}</p>
+                                {% endfor -%}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <form action="/new_user" method="POST">
+                        <input type="text" name="first_name" id="" placeholder="First Name" value="{{ session['form'].first_name }}">
+                        <input type="text" name="last_name" id="" placeholder="Last Name" value="{{ session['form'].last_name }}">
+                        <input type="phone" name="phone" id="" placeholder="phone" value="{{ session['form'].phone }}">
+                        <input type="text" name="email" id="" placeholder="email@format.com" value="{{ session['form'].email }}">
+                        <input type="password" name="password" id="" placeholder="Password" value="{{ session['form'].password }}">
+                        <input type="password" name="confirm_password" id="" placeholder="Confirm Password" value="{{ session['form'].confirm_password }}">
+
+                        <input type="submit" value="register" class="submit reg">
+                    </form>
+                </div>
+                <div class="registartion">
+                    <h3>Welcome Back!</h3>
+                    {% with errors = get_flashed_messages(category_filter=["login"]) %}
+                        {% if errors %}
+                            <div class="error-messages">
+                                {%- for msg in errors %}
+                                    <p class="error">{{ msg }}</p>
+                                {% endfor -%}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    <form action="/user_login" method="POST">
+                        <input type="text" name="email" id="" placeholder="email">
+                        <input type="password" name="password" id="" placeholder="password">
+                        <input type="submit" value="Login" class="submit log">
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </main>
+    {% include 'footer.html' %}

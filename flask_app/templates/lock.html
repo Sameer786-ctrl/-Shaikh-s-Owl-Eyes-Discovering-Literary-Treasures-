@@ -1,0 +1,17 @@
+{% include 'header.html' %}
+<body class="page-lock">
+    <main>
+        <div class="container flex">
+            <h1 class="red">☣ DANGER ☣</h1>
+            <p>Your failed attempts have blown up a nuclear power plant. Millions are dying as we speak. I hope your happy. </p>
+
+            <p>Your IP address is <strong>{{ session["ip"] }}</strong> has been recorded</p>
+
+            <p>Next Time you atempt an acitivity like this we'll log you off automatically and repoty your IP address to our site administrators </p>
+
+            <p>Toodles!</p>
+
+            <p><em>No animals were hurt int he production of this site</em></p>
+        </div>
+    </main>
+    {% include 'footer.html' %}

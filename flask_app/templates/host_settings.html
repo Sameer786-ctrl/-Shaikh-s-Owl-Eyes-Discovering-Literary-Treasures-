@@ -1,0 +1,45 @@
+{% include 'header.html' %}
+
+<body class="page-dashboard">
+    {% include 'navigation.html' %}
+    <h1>Host Settings:</h1>
+    <main>
+        <div class="info-content">
+            <h3 onclick="toggle_hidden(event)">Update Address</h3>
+            <div class="hide-content">
+                {% with errors = get_flashed_messages(category_filter=["address"]) %}
+                    {% if errors %}
+                        <div class="error-messages">
+                            {%- for msg in errors %}
+                                <p class="error">{{ msg }}</p>
+                            {% endfor -%}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                
+                <form action="/update_address" method="post">
+                    <label for="address">Address:</label>
+                    <input type="text" name="address" value="{{ host_info.address.address }}" placeholder="address">
+
+                    <div class="address-wrp">
+                        <span class="cty-wrp">
+                            <label for="city">City:</label>
+                            <input type="text" name="city" value="{{  host_info.address.city }}" placeholder="city">
+                        </span>
+                        
+                        <span class="st-wrp">
+                            {{ states() }}
+                        </span>
+
+                        <span class="num-wrp">
+                            <label for="zip">Zip:</label>
+                            <input type="numbers" name="zip" value="{{ host_info.address.zip }}" placeholder="city">
+                        </span>
+                    </div>
+                    <input type="hidden" name="user_id" value="{{ host_info.id }}">
+                    <input type="submit" value="Update Address" class="update">
+                </form>
+            </div>
+        </div>
+    </main>
+{% include 'footer.html' %}

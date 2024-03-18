@@ -1,0 +1,45 @@
+{% include 'header.html' %}
+
+<body class="page-dashboard group">
+    {% include 'navigation.html' %}
+    <main>
+        <div class="image-dec"></div>
+            <div class="container flex">
+                <main>
+                    <h1><span>Dashboard For: </span>  {{ flock_info[0].title }}</h1>
+                    {% with errors = get_flashed_messages(category_filter=["info"]) %}
+                        {% if errors %}
+                            <div class="info-messages">
+                                {%- for msg in errors %}
+                                    <p class="info">{{ msg }}</p>
+                                {% endfor -%}
+                            </div> 
+                        {% endif %}
+                    {% endwith %}
+                    <p><strong>Location: </strong>{{ flock_info[0].city }}, {{ flock_info[0].state }}  </p>
+                    <p><strong>Created</strong>: {{ flock_info[0].created_at.strftime('%B %d, %Y')  }} </p>
+
+                    
+                    <h3>Coming up Meeting:</h3>
+                    <p>Book image</p>
+                    <p>Book Title</p>
+                    <p>Book author</p>
+                    <p>Book genre</p>
+                    <p>Book series</p>
+                    <p>ect ect ect...</p>
+                    
+                    <h3>Host info</h3>
+                    <p>Where the book club will meet next:</p>
+                    <p> !! Google Map / link !! </p>
+                    </main>
+
+
+
+    <!-- 3. list of flock members
+    4. book for the month
+    5. next meeting location
+    6. link to past books
+    7. link to message?? Admin
+    8. volunteer to be the next months host ?? Auto update? -->
+
+    {% include 'footer.html' %}

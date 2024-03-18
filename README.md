@@ -1,2 +1,9 @@
-# -Shaikh-s-Owl-Eyes-Discovering-Literary-Treasures-
-"Welcome to Shaikh's Book Nook, a haven for night owls who revel in the magic of literature after dark. Founded by the Shaikh siblings, our club invites you to join engaging discussions and explore captivating stories under the moonlit sky. Embrace the enchantment of nighttime reading with us!"
+# NightOwl
+book club app where you can keep track of groups, members, books, and the next location of your book club
+
+
+![](https://github.com/lisabroadhead/NightOwl/blob/main/nightowl.png)
+
+![](https://github.com/lisabroadhead/NightOwl/blob/main/users-dash.png)
+![](https://github.com/lisabroadhead/NightOwl/blob/main/join-group.png)
+![](https://github.com/lisabroadhead/NightOwl/blob/main/add-book.png)

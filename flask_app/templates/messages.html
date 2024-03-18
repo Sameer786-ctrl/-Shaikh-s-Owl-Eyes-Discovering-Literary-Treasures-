@@ -1,0 +1,53 @@
+{% include 'header.html' %}
+<body class="page-message">
+    {% include 'navigation.html' %}
+    <div class="container">
+        <h1><span>Your</span>Messages</h1>
+        <div class="row flex title">
+            <p class="message col-2">Message</p>
+            <p class="date col-4">Sent on</p>
+            <p class="action col-4">Action</p>
+        </div>
+        {% if get_all_messages|length == 0 %}
+            <p>You have no messages!</p>
+        {% else %}
+
+        
+            {% for message in get_all_messages %}
+                <div class="row flex indv-message">
+                    <div class="col-2">
+                        <h5>
+                        {% if message.message_type == 'join_request' %}
+                            Request to join your flock: {{message.flock.title}}: 
+                        {% elif message.message_type == 'welcome'  %}
+                            Welcome!
+                        {% elif message.subject %}
+                            Personal Message: {{ message.subject }}
+                        {% endif %}
+                        </h5>
+                        <p>{{ message.message }}</p>
+                    </div>
+
+                    <div class="col-4"><p>{{ message.info["created_at"].strftime('%B %d, %Y') }}</p></div>
+
+                    <div class="col-4 actions">
+                        <a href="/delete_message/{{message.id}}/{{ message.info.user_id  }}"><i class="fa-solid fa-trash-can"></i></a> | 
+                        <a href="/reply_message/{{ message.info.from_id }}/{{ message.info.user_id  }}"><i class="fa-solid fa-pencil"></i></a> 
+                        {% if message.message_type == 'join_request' %}
+                            | <a href="/delete_message/{{message.id}}/{{ message.info.user_id  }}" class="button">Decline</a>
+                            <form action="accept_user" method="POST">
+                                <input type="hidden" name="from_id" value="{{ message.info.from_id }}">
+                                <input type="hidden" name="user_id" value="{{ message.info.user_id }}">
+                                <input type="hidden" name="mess_id" value="{{ message.id }}">
+                                <input type="hidden" name="flock_id" value="{{ message.flock.id  }}">
+                                <input type="hidden" name="flock_title" value="{{ message.flock.title }}">
+                                <input type="submit" value="Accept!" class="submit">
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="bottom-dec"></div>
+{% include 'footer.html' %}

@@ -1,0 +1,42 @@
+{% include 'header.html' %}
+<body class="page-send-message">
+    {% include 'navigation.html' %}
+    <div class="container">
+        <h1><span>Message To: </span>  {{ to_user_info.first_name }} {{ to_user_info.last_name }}</h1>
+        <p class="from"><strong>From:</strong> {{from_user_info.first_name}} {{ from_user_info.last_name}}</p>
+        <form action="/send_user_message" method="POST">
+            {% with errors = get_flashed_messages(category_filter=["personal"]) %}
+                {% if errors %}
+                    <div class="error-messages">
+                        {%- for msg in errors %}
+                            <p class="error">{{ msg }}</p>
+                        {% endfor -%}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <label for="subject" placeholder="Subject">Subject</label>
+            <input type="text" name="subject" value="{{ session['message'].subject }}" placeholder="Subject">
+
+            <label for="message">Message:</label>
+            <textarea name="message" cols="30" rows="10" placeholder="Message...">{{ session['message'].message }}</textarea>
+
+            <input type="hidden" name="to_id" value="{{ session['message'].to_id }}">
+            <input type="hidden" name="from_id" value="{{ session['message'].from_id }}">
+            <input type="hidden" name="message_type" value="personal">
+
+            <input type="hidden" name="to_name" value="{{ to_user_info.first_name }} {{ to_user_info.last_name }}<">
+            <input type="hidden" name="from_name" value="{{from_user_info.first_name}} {{ from_user_info.last_name}}</">
+            <input type="submit" value="Send Message" class="submit">
+        </form>
+    </div>
+    <div class="dec-right"></div>
+    {% include 'footer.html' %}
+
+
+    <!-- 
+
+        1. With personal message we could set up a feed you can go back a vist?
+        2. send an email to dev team when a book gets added
+        3. Display the different message so private / welcom / request are better seperated
+            - look into passing the messenger name with request to join the club
+    -->

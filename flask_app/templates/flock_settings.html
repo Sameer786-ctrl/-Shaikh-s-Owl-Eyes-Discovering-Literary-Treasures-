@@ -1,0 +1,80 @@
+{% include 'header.html' %}
+<body class="page-flock-settings">
+    {% include 'navigation.html' %}
+    <main>
+        <div class="container">
+            
+            <h1><span> Edit Flock Settings for the: </span> {{ flock_info[0].title }} </h1>
+            <p><strong>Flock leader: {{ flock_info[0].member.first_name }} {{ flock_info[0].member.last_name }}</strong> </p>
+            <p><strong>Memeber(s) in flock</strong>: {{ all_memebers|length + 1 }}</p>
+            <p><strong>Group started:</strong> {{ flock_info[0].created_at.strftime('%B %d, %Y') }} </p>
+            
+            <h3>Set New Admin for Flock </h3>
+            <p>This will remove you as admin.</p>
+            {% with errors = get_flashed_messages(category_filter=["admin"]) %}
+                {% if errors %}
+                    <div class="error-messages"></div>
+                        {%- for msg in errors %}
+                            <p class="error">{{ msg }}</p>
+                        {% endfor -%}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <form action="/set_new_admin" method="post">
+                <select name="new_admin_id" required>
+                    <option value="" selected deactivated>Chose New Admin</option>
+                    {% for member in all_memebers %}
+                        <option value="{{ member.id}}">{{ member.first_name}} {{ member.last_name}} - {{ member.id}}</option>
+                    {% endfor %}
+                </select>
+
+                <input type="hidden" name="old_admin_id" value="{{ session['id'] }} ">
+                <input type="hidden" name="flock_id" value="{{ flock_info[0].id }}">
+                <input type="submit" value="Set New Admin">
+            </form>
+            <h3>Set Host Privileges:</h3>
+            <p>Hosts will be able to set this months book, location, and group messaging capabilits. Hosts privilege periods <strong>can't </strong> overlap </p>
+            <form action="/set_host" method="POST">
+                {% with errors = get_flashed_messages(category_filter=["host"]) %}
+                    {% if errors %}
+                        <div class="error-messages">
+                            {%- for msg in errors %}
+                                <p class="error">{{ msg }}</p>
+                            {% endfor -%}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                <label for="host_id">Make User From Group Host:</label>
+                <select name="new_host_id" required>
+                    <option value="" selected deactivated>Chose New Host</option>
+                    {% for member in all_memebers %}
+                        <option value="{{ member.id}}">{{ member.first_name}} {{ member.last_name}}</option>
+                    {% endfor %}
+                </select>
+                <label for="event_date">Event Date:</label>
+                <input type="date" name="event_date">
+                
+                <input type="hidden" name="flock_id" value="{{ flock_info[0].id }}">
+                <input type="submit" value="Make Host">
+            </form>
+
+            <h3>List of Current Hosts:</h3>
+
+            
+            <a href="/delete_group" class="button delete"> Delete Group </a>
+            <!-- 
+            1. set people as host for a months persio
+            2. set a new admin
+            3. edit group settings (name, locaition, ect.)
+            4. send out group banners / messages 
+            5. List our members
+                -message
+            6. delete the group
+
+
+            7. send new admin a message that they're now admin for the flock
+            -->
+
+        </div>
+    </main>
+{% include 'footer.html' %}

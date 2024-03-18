@@ -1,0 +1,32 @@
+{% include 'header.html' %}
+<body class="page-join-flock">
+    {% include 'navigation.html' %}
+    <main>
+        <div class="container flex">    
+            <div class="col-2">
+                <h1><span>Ready to</span> Join a Flock</h1>
+                
+                <form action="/submit_join_request" method="POST" class="join-flock">
+                    <label for="flock_id">Select a Flock:</label>
+                    <!-- if they're not in a group yet -->
+                    <select name="flock_id" id="">
+                        <option value="">Join a Flock</option>
+                        {% for flock in all_flocks %}
+                            <option value="{{ flock.id }},{{ flock.status.user_id}}">{{ flock.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <textarea name="message" id="" cols="30" rows="10">{{user_info[0].first_name}} {{user_info[0].last_name}} would like to join your group!</textarea>
+                    <input type="hidden" name="user_id" value="{{ user_info[0].id }}">
+                    <input type="submit" value="Join!" class="submit">
+                </form>
+                <p>Or</p>
+                <a href="/create_flock" class="button"> Create a flock </a>
+                
+            </div>
+
+            <div class="col-2">
+                <img src="static/img/angry-owl.png" alt="angry owl">
+            </div>
+        </div>
+    </main>
+    {% include 'footer.html' %}
